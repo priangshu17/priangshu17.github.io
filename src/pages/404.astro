@@ -1,0 +1,39 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="Not found" path="/404">
+  <section class="wrap section nf">
+    <p class="mono index">404</p>
+    <h1>This page isn&rsquo;t in the log.</h1>
+    <p class="prose">
+      The page you asked for doesn&rsquo;t exist — or hasn&rsquo;t been written
+      yet. Try the experiment log instead.
+    </p>
+    <div class="actions">
+      <a class="cta cta--accent" href="/">Home ↗</a>
+      <a class="cta" href="/work">All work ↗</a>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .nf {
+    min-height: 48vh;
+  }
+  h1 {
+    font-size: clamp(2.2rem, 6vw, 3.2rem);
+    margin-top: 0.75rem;
+    max-width: 16ch;
+  }
+  .prose {
+    margin-top: 1.25rem;
+    font-size: 1.1rem;
+  }
+  .actions {
+    margin-top: 2rem;
+    display: flex;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+  }
+</style>

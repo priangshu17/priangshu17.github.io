@@ -1,0 +1,20 @@
+# build output
+dist/
+.output/
+
+# dependencies
+node_modules/
+
+# generated types
+.astro/
+
+# environment / local
+.env
+.env.production
+*.local
+
+# macOS / editor
+.DS_Store
+.vscode/*
+!.vscode/extensions.json
+Thumbs.db

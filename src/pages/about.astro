@@ -1,0 +1,89 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { CONTACT } from '../consts';
+
+const links = [
+  { label: 'GitHub', href: CONTACT.github },
+  CONTACT.linkedin ? { label: 'LinkedIn', href: CONTACT.linkedin } : null,
+  CONTACT.email ? { label: 'Email', href: `mailto:${CONTACT.email}` } : null,
+  CONTACT.resume ? { label: 'Résumé', href: CONTACT.resume } : null,
+].filter(Boolean) as { label: string; href: string }[];
+---
+
+<BaseLayout
+  title="About"
+  path="/about"
+  description="Priangshu Paul — an ML engineer interested in the systems-level trade-offs behind efficient machine learning."
+>
+  <section class="wrap section about">
+    <p class="eyebrow">About</p>
+    <h1>The person behind the experiments.</h1>
+
+    <div class="prose body">
+      <p>
+        I&rsquo;m Priangshu Paul, an ML engineer drawn to the systems side of
+        machine learning — the trade-offs behind efficient language models.
+        Most of my projects begin with a hardware or budget constraint and ask
+        what it actually costs: what fits in memory, what runs faster, and what
+        quality you give up to get there.
+      </p>
+      <p>
+        I like work that can be inspected. That usually means a controlled
+        pipeline, measured numbers with units, and limitations stated next to
+        the conclusions rather than hidden from them. The problems I want to
+        work on sit around efficient training and inference — quantization,
+        attention and the engineering that makes large models practical on
+        ordinary hardware.
+      </p>
+    </div>
+
+    <div class="contact">
+      <p class="mono tag index">Contact</p>
+      <ul>
+        {
+          links.map((l) => (
+            <li>
+              <a
+                class="cta"
+                href={l.href}
+                rel="noopener"
+                target={l.href.startsWith('mailto:') ? undefined : '_blank'}
+              >
+                {l.label} ↗
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  h1 {
+    font-size: clamp(2.2rem, 6vw, 3.4rem);
+    margin-top: 1rem;
+    max-width: 18ch;
+  }
+  .body {
+    margin-top: 2rem;
+    font-size: 1.15rem;
+    line-height: 1.6;
+  }
+  .contact {
+    margin-top: 3rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--rule);
+  }
+  .contact .tag {
+    color: var(--oxide);
+  }
+  .contact ul {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem 2rem;
+    padding: 0;
+    margin: 1.25rem 0 0;
+  }
+</style>

@@ -1,0 +1,88 @@
+---
+import { SITE, NAV, CONTACT } from '../consts';
+const path = Astro.url.pathname.replace(/\/$/, '') || '/';
+const isActive = (href: string) =>
+  href === '/' ? path === '/' : path === href || path.startsWith(href + '/');
+---
+
+<header class="site-header">
+  <div class="wrap bar">
+    <a href="/" class="brand" aria-label={`${SITE.name} — home`}>
+      <span class="brand-name">{SITE.name}</span>
+    </a>
+    <nav aria-label="Primary">
+      <ul>
+        {
+          NAV.map((item) => (
+            <li>
+              <a href={item.href} aria-current={isActive(item.href) ? 'page' : undefined}>
+                {item.label}
+              </a>
+            </li>
+          ))
+        }
+        <li>
+          <a href={CONTACT.github} rel="me noopener" target="_blank">GitHub ↗</a>
+        </li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<style>
+  .site-header {
+    border-bottom: 1px solid var(--rule);
+    position: sticky;
+    top: 0;
+    background: color-mix(in srgb, var(--paper) 88%, transparent);
+    backdrop-filter: saturate(140%) blur(6px);
+    z-index: 20;
+  }
+  .bar {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 1.5rem;
+    padding-block: 1.1rem;
+  }
+  .brand-name {
+    font-family: var(--font-serif);
+    font-size: 1.1rem;
+    font-weight: 500;
+    letter-spacing: -0.01em;
+  }
+  nav ul {
+    list-style: none;
+    display: flex;
+    align-items: baseline;
+    gap: clamp(1rem, 3vw, 2rem);
+    padding: 0;
+    margin: 0;
+  }
+  nav a {
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    letter-spacing: 0.04em;
+    color: var(--ink-muted);
+    padding-bottom: 3px;
+    border-bottom: 1px solid transparent;
+    transition: color 0.15s ease, border-color 0.15s ease;
+  }
+  nav a:hover {
+    color: var(--oxide);
+  }
+  nav a[aria-current='page'] {
+    color: var(--carbon);
+    border-color: var(--oxide);
+  }
+  @media (max-width: 460px) {
+    .bar {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 0.75rem;
+    }
+    nav ul {
+      gap: 1.25rem;
+    }
+  }
+</style>

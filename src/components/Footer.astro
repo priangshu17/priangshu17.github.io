@@ -1,0 +1,74 @@
+---
+import { SITE, CONTACT } from '../consts';
+const year = new Date().getFullYear();
+
+const links = [
+  { label: 'GitHub', href: CONTACT.github },
+  CONTACT.linkedin ? { label: 'LinkedIn', href: CONTACT.linkedin } : null,
+  CONTACT.email ? { label: 'Email', href: `mailto:${CONTACT.email}` } : null,
+  CONTACT.resume ? { label: 'Résumé', href: CONTACT.resume } : null,
+].filter(Boolean) as { label: string; href: string }[];
+---
+
+<footer class="site-footer">
+  <hr class="rule" />
+  <div class="wrap foot">
+    <div>
+      <p class="name">{SITE.name}</p>
+      <p class="mono">{SITE.tagline}</p>
+    </div>
+    <nav aria-label="Contact and social">
+      <ul>
+        {
+          links.map((l) => (
+            <li>
+              <a class="cta" href={l.href} rel="noopener" target={l.href.startsWith('mailto:') ? undefined : '_blank'}>
+                {l.label}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+  </div>
+  <div class="wrap colophon">
+    <p class="mono">© {year} · Built with Astro · Figures from the source repositories.</p>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    margin-top: var(--section-gap);
+  }
+  .foot {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 2rem;
+    flex-wrap: wrap;
+    padding-top: 2.5rem;
+  }
+  .name {
+    font-family: var(--font-serif);
+    font-size: 1.15rem;
+  }
+  .foot .mono {
+    margin-top: 0.25rem;
+  }
+  .foot nav ul {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.25rem 2rem;
+    padding: 0;
+    margin: 0;
+  }
+  .colophon {
+    padding-top: 2rem;
+    padding-bottom: 2.5rem;
+  }
+  .colophon .mono {
+    color: var(--ink-faint);
+    font-size: 0.7rem;
+  }
+</style>

@@ -1,0 +1,36 @@
+---
+interface Props {
+  title: string;
+  items: string[];
+}
+const { title, items } = Astro.props;
+---
+
+<aside class="callout">
+  <p class="mono">{title}</p>
+  <ul>
+    {items.map((i) => <li>{i}</li>)}
+  </ul>
+</aside>
+
+<style>
+  .callout {
+    border-left: 2px solid var(--oxide);
+    padding: 0.25rem 0 0.25rem 1.25rem;
+    max-width: var(--measure);
+  }
+  .callout .mono {
+    color: var(--oxide);
+    margin-bottom: 0.75rem;
+  }
+  .callout ul {
+    margin: 0;
+    padding-left: 1.1rem;
+    display: grid;
+    gap: 0.6rem;
+  }
+  .callout li {
+    line-height: 1.55;
+    color: var(--carbon);
+  }
+</style>

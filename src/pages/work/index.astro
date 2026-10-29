@@ -1,0 +1,46 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ProjectRow from '../../components/ProjectRow.astro';
+
+const projects = (await getCollection('projects')).sort(
+  (a, b) => a.data.order - b.data.order,
+);
+---
+
+<BaseLayout
+  title="Work"
+  path="/work"
+  description="Selected experiments in efficient machine learning — fine-tuning, attention and inference, each with setup, results and limitations."
+>
+  <section class="wrap section">
+    <p class="eyebrow">Experiment log</p>
+    <h1>Selected work</h1>
+    <p class="intro measure">
+      A short index of experiments I&rsquo;m willing to show in full — each with
+      its question, setup, results and honest limitations. Two complete case
+      studies, not a list of every repository.
+    </p>
+
+    <div class="list">
+      {projects.map((p, i) => <ProjectRow project={p} index={String(i + 1).padStart(2, '0')} />)}
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  h1 {
+    font-size: clamp(2.4rem, 7vw, 3.6rem);
+    margin-top: 1rem;
+  }
+  .intro {
+    margin-top: 1.25rem;
+    font-size: 1.15rem;
+    color: var(--ink-muted);
+    line-height: 1.55;
+  }
+  .list {
+    margin-top: 2.5rem;
+    border-bottom: 1px solid var(--rule);
+  }
+</style>

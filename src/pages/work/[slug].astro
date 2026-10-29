@@ -1,0 +1,266 @@
+---
+import { getCollection, type CollectionEntry } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import SetupTable from '../../components/SetupTable.astro';
+import Figure from '../../components/Figure.astro';
+import LimitationCallout from '../../components/LimitationCallout.astro';
+
+export async function getStaticPaths() {
+  const projects = await getCollection('projects');
+  const sorted = projects.sort((a, b) => a.data.order - b.data.order);
+  return sorted.map((project, i) => {
+    const next = sorted[(i + 1) % sorted.length];
+    return {
+      params: { slug: project.slug },
+      props: { project, next },
+    };
+  });
+}
+
+interface Props {
+  project: CollectionEntry<'projects'>;
+  next: CollectionEntry<'projects'>;
+}
+const { project, next } = Astro.props;
+const d = project.data;
+const reviewed = new Date(d.lastReviewed).toLocaleDateString('en-GB', {
+  day: 'numeric',
+  month: 'long',
+  year: 'numeric',
+});
+---
+
+<BaseLayout title={d.shortTitle} path={`/work/${project.slug}`} description={d.summary}>
+  <article class="wrap case">
+    {/* Header */}
+    <header class="case-head">
+      <p class="eyebrow">
+        {d.status} · Reviewed {reviewed}
+      </p>
+      <h1>{d.title}</h1>
+      <div class="meta">
+        <span class="mono"><span class="k">Role</span> {d.role}</span>
+        <a class="mono link" href={d.repoUrl} rel="noopener" target="_blank">
+          <span class="k">Repo</span> {d.repoName} ↗
+        </a>
+        <span class="mono"><span class="k">Commit</span> {d.commit}</span>
+      </div>
+    </header>
+
+    {/* Question */}
+    <section class="block">
+      <span class="mono tag index">Question</span>
+      <p class="question">{d.question}</p>
+    </section>
+
+    {/* Setup */}
+    <section class="block">
+      <h2 class="h">Setup</h2>
+      <SetupTable rows={d.setup} />
+    </section>
+
+    {/* Method */}
+    <section class="block">
+      <h2 class="h">Method</h2>
+      <div class="prose">
+        {d.method.map((p) => <p>{p}</p>)}
+      </div>
+    </section>
+
+    {/* Results */}
+    <section class="block">
+      <h2 class="h">Results</h2>
+      <p class="prose lead-take">{d.resultsLead}</p>
+      <div class="figures">
+        {d.figures.map((f) => <Figure {...f} />)}
+      </div>
+      <ul class="findings">
+        {d.findings.map((f) => <li>{f}</li>)}
+      </ul>
+    </section>
+
+    {/* Interpretation */}
+    <section class="block">
+      <h2 class="h">Interpretation</h2>
+      <div class="prose">
+        {d.interpretation.map((p) => <p>{p}</p>)}
+      </div>
+    </section>
+
+    {/* What surprised me / next */}
+    {
+      d.surprised && (
+        <section class="block">
+          <aside class="surprised">
+            <span class="mono tag index">{d.surprised.label}</span>
+            <p class="prose">{d.surprised.body}</p>
+          </aside>
+        </section>
+      )
+    }
+
+    {/* Limitations */}
+    <section class="block">
+      <h2 class="h">Limitations &amp; next experiment</h2>
+      <LimitationCallout title="Where this stops" items={d.limitations} />
+    </section>
+
+    {/* Reproduce */}
+    <section class="block">
+      <h2 class="h">Reproduce</h2>
+      <div class="prose">
+        <p>
+          Repository <a class="link" href={d.repoUrl} rel="noopener" target="_blank">{d.repoName}</a>,
+          pinned at commit <code>{d.commit}</code>.
+        </p>
+      </div>
+      <pre class="code" aria-label="Commands to reproduce"><code>{d.reproduce.commands.join('\n')}</code></pre>
+      <dl class="repro-notes">
+        <div><dt class="mono">Data</dt><dd>{d.reproduce.data}</dd></div>
+        <div><dt class="mono">Raw results</dt><dd>{d.reproduce.rawResults}</dd></div>
+      </dl>
+    </section>
+
+    {/* Footer nav */}
+    <nav class="case-nav" aria-label="More work">
+      <a class="cta" href="/work">← All work</a>
+      {next.slug !== project.slug && (
+        <a class="cta cta--accent" href={`/work/${next.slug}`}>
+          Next: {next.data.shortTitle} →
+        </a>
+      )}
+    </nav>
+  </article>
+</BaseLayout>
+
+<style>
+  .case {
+    padding-top: clamp(2.5rem, 6vw, 4rem);
+    padding-bottom: 2rem;
+  }
+  .case-head {
+    padding-bottom: 2rem;
+    border-bottom: 1px solid var(--rule);
+  }
+  .case-head h1 {
+    font-size: clamp(2.2rem, 6vw, 3.4rem);
+    line-height: 1.06;
+    margin-top: 1rem;
+    max-width: 20ch;
+  }
+  .meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem 2rem;
+    margin-top: 1.5rem;
+  }
+  .meta .k {
+    color: var(--oxide);
+    margin-right: 0.4rem;
+  }
+
+  .block {
+    padding-block: clamp(2.25rem, 5vw, 3.25rem);
+    border-bottom: 1px solid var(--rule);
+  }
+  .tag {
+    display: inline-block;
+    margin-bottom: 1rem;
+  }
+  .question {
+    font-family: var(--font-serif);
+    font-size: clamp(1.5rem, 4vw, 2.1rem);
+    line-height: 1.2;
+    max-width: 24ch;
+  }
+  .h {
+    font-size: 1.05rem;
+    font-family: var(--font-mono);
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--ink-muted);
+    margin-bottom: 1.5rem;
+  }
+  .lead-take {
+    font-size: 1.2rem;
+    line-height: 1.5;
+    margin-bottom: 2rem;
+  }
+  .figures {
+    display: grid;
+    gap: 2.5rem;
+  }
+  .findings {
+    margin: 2.5rem 0 0;
+    padding-left: 1.1rem;
+    max-width: var(--measure);
+    display: grid;
+    gap: 0.75rem;
+  }
+  .findings li {
+    line-height: 1.55;
+  }
+  .surprised {
+    background: var(--paper-sunk);
+    border: 1px solid var(--rule);
+    padding: 1.5rem 1.5rem 1.75rem;
+    max-width: var(--measure);
+  }
+  .surprised .tag {
+    color: var(--oxide);
+  }
+  .code {
+    background: var(--panel-bg);
+    color: var(--panel-ink);
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    line-height: 1.7;
+    padding: 1.25rem 1.5rem;
+    margin: 1.5rem 0;
+    overflow-x: auto;
+    max-width: var(--measure);
+  }
+  .code code {
+    white-space: pre;
+  }
+  .repro-notes {
+    margin: 0;
+    max-width: var(--measure);
+  }
+  .repro-notes > div {
+    display: grid;
+    grid-template-columns: minmax(7rem, 9rem) 1fr;
+    gap: 1rem;
+    padding: 0.7rem 0;
+    border-top: 1px solid var(--rule);
+  }
+  .repro-notes dt {
+    color: var(--ink-muted);
+    padding-top: 0.1rem;
+  }
+  .repro-notes dd {
+    margin: 0;
+    line-height: 1.5;
+  }
+  .case-nav {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 1rem;
+    padding-top: 2rem;
+  }
+  code {
+    font-family: var(--font-mono);
+    font-size: 0.88em;
+    background: var(--paper-sunk);
+    padding: 0.1em 0.35em;
+    border: 1px solid var(--rule);
+  }
+  @media (max-width: 520px) {
+    .repro-notes > div {
+      grid-template-columns: 1fr;
+      gap: 0.2rem;
+    }
+  }
+</style>
