@@ -18,7 +18,7 @@ export const CONTACT = {
   github: 'https://github.com/priangshu17',
   email: 'priangshupaul77@gmail.com',
   phone: '+91 6009463281', // displayed as-is; linked as a tel: with spaces stripped
-  linkedin: '', // add your reviewed LinkedIn URL when ready, e.g. https://www.linkedin.com/in/...
+  linkedin: 'https://www.linkedin.com/in/priangshu-paul',
   resume: '',
 };
 
