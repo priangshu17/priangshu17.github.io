@@ -44,6 +44,13 @@ const reviewed = new Date(d.lastReviewed).toLocaleDateString('en-GB', {
           <span class="k">Repo</span> {d.repoName} ↗
         </a>
         <span class="mono"><span class="k">Commit</span> {d.commit}</span>
+        {
+          d.papers.length > 0 && (
+            <a class="mono link" href={d.papers[0].url} rel="noopener" target="_blank">
+              <span class="k">Paper</span> original ↗
+            </a>
+          )
+        }
       </div>
     </header>
 
@@ -120,6 +127,25 @@ const reviewed = new Date(d.lastReviewed).toLocaleDateString('en-GB', {
         <div><dt class="mono">Raw results</dt><dd>{d.reproduce.rawResults}</dd></div>
       </dl>
     </section>
+
+    {/* References — original papers */}
+    {
+      d.papers.length > 0 && (
+        <section class="block">
+          <h2 class="h">Original paper{d.papers.length > 1 ? 's' : ''}</h2>
+          <ul class="papers">
+            {d.papers.map((p) => (
+              <li>
+                <a class="paper-link" href={p.url} rel="noopener" target="_blank">
+                  <span class="paper-title">{p.title} ↗</span>
+                  {p.authors && <span class="paper-auth mono">{p.authors}</span>}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )
+    }
 
     {/* Footer nav */}
     <nav class="case-nav" aria-label="More work">
@@ -242,6 +268,35 @@ const reviewed = new Date(d.lastReviewed).toLocaleDateString('en-GB', {
   .repro-notes dd {
     margin: 0;
     line-height: 1.5;
+  }
+  .papers {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    max-width: var(--measure);
+    border-top: 1px solid var(--rule);
+  }
+  .papers li {
+    border-bottom: 1px solid var(--rule);
+  }
+  .paper-link {
+    display: block;
+    padding: 1rem 0;
+    transition: color 0.15s ease;
+  }
+  .paper-link:hover {
+    color: var(--oxide);
+  }
+  .paper-title {
+    display: block;
+    font-family: var(--font-serif);
+    font-size: 1.15rem;
+    line-height: 1.3;
+  }
+  .paper-auth {
+    display: block;
+    margin-top: 0.3rem;
+    color: var(--ink-muted);
   }
   .case-nav {
     display: flex;

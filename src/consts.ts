@@ -16,8 +16,9 @@ export const SITE = {
 //     left empty until you approve the exact file.
 export const CONTACT = {
   github: 'https://github.com/priangshu17',
-  email: 'you@example.com', // TODO: replace with your confirmed professional email
-  linkedin: '', // TODO: add your reviewed LinkedIn URL, e.g. https://www.linkedin.com/in/...
+  email: 'priangshupaul77@gmail.com',
+  phone: '+91 6009463281', // displayed as-is; linked as a tel: with spaces stripped
+  linkedin: '', // add your reviewed LinkedIn URL when ready, e.g. https://www.linkedin.com/in/...
   resume: '',
 };
 

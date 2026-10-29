@@ -71,4 +71,12 @@ reproduce:
     - 'python scripts/plot_results.py'
   data: 'GSM8K preprocessed splits are committed under data/processed/.'
   rawResults: 'Aggregated metrics live in results/processed/summary.csv with discussion in results/results.md. Per-run metrics.json files are not all version-controlled.'
+
+papers:
+  - title: 'QLoRA: Efficient Finetuning of Quantized LLMs'
+    authors: 'Dettmers, Pagnoni, Holtzman & Zettlemoyer — 2023'
+    url: 'https://arxiv.org/abs/2305.14314'
+  - title: 'LoRA: Low-Rank Adaptation of Large Language Models'
+    authors: 'Hu et al. — 2021'
+    url: 'https://arxiv.org/abs/2106.09685'
 ---

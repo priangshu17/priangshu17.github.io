@@ -70,4 +70,12 @@ reproduce:
     - 'python scripts/run_seq_len_sweep.py'
   data: 'No external dataset — inputs are randomly generated hidden-state tensors.'
   rawResults: 'Raw CSVs are not version-controlled (hardware-dependent); committed plots in results/ and analysis in notebooks/analysis.ipynb are the reference.'
+
+papers:
+  - title: 'FlashAttention: Fast and Memory-Efficient Exact Attention with IO-Awareness'
+    authors: 'Dao, Fu, Ermon, Rudra & Ré — 2022'
+    url: 'https://arxiv.org/abs/2205.14135'
+  - title: 'FlashAttention-2: Faster Attention with Better Parallelism and Work Partitioning'
+    authors: 'Dao — 2023'
+    url: 'https://arxiv.org/abs/2307.08691'
 ---

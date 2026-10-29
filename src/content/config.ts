@@ -46,6 +46,17 @@ const projects = defineCollection({
       data: z.string(),
       rawResults: z.string(),
     }),
+
+    // Original paper(s) the work reimplements or benchmarks — external links.
+    papers: z
+      .array(
+        z.object({
+          title: z.string(),
+          authors: z.string().optional(),
+          url: z.string().url(),
+        }),
+      )
+      .default([]),
   }),
 });
 

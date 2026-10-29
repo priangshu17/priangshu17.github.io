@@ -2,12 +2,16 @@
 import { SITE, CONTACT } from '../consts';
 const year = new Date().getFullYear();
 
+const tel = CONTACT.phone ? CONTACT.phone.replace(/\s+/g, '') : '';
 const links = [
   { label: 'GitHub', href: CONTACT.github },
   CONTACT.linkedin ? { label: 'LinkedIn', href: CONTACT.linkedin } : null,
   CONTACT.email ? { label: 'Email', href: `mailto:${CONTACT.email}` } : null,
+  CONTACT.phone ? { label: CONTACT.phone, href: `tel:${tel}` } : null,
   CONTACT.resume ? { label: 'Résumé', href: CONTACT.resume } : null,
 ].filter(Boolean) as { label: string; href: string }[];
+
+const isExternal = (href: string) => href.startsWith('http');
 ---
 
 <footer class="site-footer">
@@ -22,7 +26,7 @@ const links = [
         {
           links.map((l) => (
             <li>
-              <a class="cta" href={l.href} rel="noopener" target={l.href.startsWith('mailto:') ? undefined : '_blank'}>
+              <a class="cta" href={l.href} rel="noopener" target={isExternal(l.href) ? '_blank' : undefined}>
                 {l.label}
               </a>
             </li>
