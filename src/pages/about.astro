@@ -1,6 +1,6 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import { CONTACT } from '../consts';
+import { CONTACT, NOW } from '../consts';
 
 const links = [
   { label: 'GitHub', href: CONTACT.github },
@@ -18,6 +18,10 @@ const links = [
   <section class="wrap section about">
     <p class="eyebrow">About</p>
     <h1>The person behind the experiments.</h1>
+
+    <p class="now-line mono">
+      Currently {NOW.role} at {NOW.company} · {NOW.period} · {NOW.location}
+    </p>
 
     <div class="prose body">
       <p>
@@ -64,6 +68,16 @@ const links = [
     font-size: clamp(2.2rem, 6vw, 3.4rem);
     margin-top: 1rem;
     max-width: 18ch;
+  }
+  .now-line {
+    margin-top: 1.25rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--rule);
+    color: var(--ink-muted);
+  }
+  .now-line::before {
+    content: '● ';
+    color: var(--oxide);
   }
   .body {
     margin-top: 2rem;

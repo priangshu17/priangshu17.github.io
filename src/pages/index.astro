@@ -1,7 +1,7 @@
 ---
 import { getCollection } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
-import { SITE, CONTACT } from '../consts';
+import { SITE, CONTACT, NOW } from '../consts';
 
 const projects = (await getCollection('projects')).sort(
   (a, b) => a.data.order - b.data.order,
@@ -130,10 +130,47 @@ const howIWork = [
     </ul>
   </section>
 
+  {/* ---------- Now (current role) ---------- */}
+  <section class="wrap section now">
+    <div class="section-head">
+      <span class="mono index">04</span>
+      <span class="mono">Now</span>
+    </div>
+    <div class="now-grid">
+      <div class="role">
+        <h2>
+          {NOW.role},{' '}
+          {
+            NOW.companyUrl ? (
+              <a class="link" href={NOW.companyUrl} rel="noopener" target="_blank">{NOW.company}</a>
+            ) : (
+              NOW.company
+            )
+          }
+        </h2>
+        <p class="role-meta mono">{NOW.period} · {NOW.location}</p>
+        <p class="role-lede">{NOW.lede}</p>
+      </div>
+      <ul class="now-items">
+        {
+          NOW.items.map((it) => (
+            <li>
+              <div class="item-head">
+                <span class="mono index">{it.label}</span>
+                {it.status && <span class="mono status">{it.status}</span>}
+              </div>
+              <p>{it.body}</p>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
   {/* ---------- About & contact ---------- */}
   <section class="wrap section about-teaser">
     <div class="section-head">
-      <span class="mono index">04</span>
+      <span class="mono index">05</span>
       <span class="mono">About</span>
     </div>
     <div class="grid-about">
@@ -287,6 +324,52 @@ const howIWork = [
     color: var(--ink-muted);
   }
 
+  /* Now (current role) */
+  .now-grid {
+    display: grid;
+    grid-template-columns: minmax(16rem, 1fr) 1.6fr;
+    gap: clamp(2rem, 5vw, 4rem);
+    align-items: start;
+  }
+  .role h2 {
+    font-size: clamp(1.5rem, 3.4vw, 2.1rem);
+    line-height: 1.12;
+    max-width: 16ch;
+  }
+  .role-meta {
+    margin-top: 0.9rem;
+  }
+  .role-lede {
+    margin-top: 1rem;
+    color: var(--ink-muted);
+    max-width: 34ch;
+    line-height: 1.55;
+  }
+  .now-items {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    border-top: 1px solid var(--rule);
+  }
+  .now-items li {
+    padding: 1.4rem 0;
+    border-bottom: 1px solid var(--rule);
+  }
+  .item-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 0.6rem;
+  }
+  .item-head .status {
+    color: var(--oxide);
+  }
+  .now-items p {
+    line-height: 1.55;
+    max-width: 62ch;
+  }
+
   /* About teaser */
   .grid-about {
     display: grid;
@@ -308,7 +391,8 @@ const howIWork = [
 
   @media (max-width: 760px) {
     .grid,
-    .grid-about {
+    .grid-about,
+    .now-grid {
       grid-template-columns: 1fr;
     }
     /* Keep the reading order sensible: text before figure on the second block */
